@@ -5,8 +5,19 @@ GET http://localhost:3000/
 
 
 GET http://localhost:3000/datos
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzA1OTk0LCJleHAiOjE2MzE3MDYwMDl9.y1hhbfkhbBvxNEEKk7D1CKZzGfNw6tA_LEGtnWHf9kM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzI5ODQwLCJleHAiOjE2MzE3Mjk4NTV9.pp1Pej2traj8eKaNepLYMTr_juoswyCYoN85zeRGcQg
 
+
+
+###
+
+
+POST http://localhost:3000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzIzMDAyfQ.A14gEnc9dMVNLtXBV5EGJLGV9lLsfjs5NPh4xBx6ZMY"
+}
 
 
 ###

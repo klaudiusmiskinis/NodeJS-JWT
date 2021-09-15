@@ -15,15 +15,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/autenticar.html')
 });
 
+app.post('/token', (req, res) => {
+    console.log(req.body.token)
+})
+
 app.post('/autenticar', (req, res) => {
     if (req.body.usuario === 'asd' && req.body.contrasena === '123') {
-        const payload = {
-            check: true //Marcamos que es correcto el login
-        }
-        const token = jwt.sign(payload, process.env.JWT_KEY, {
-            expiresIn: 1440
-        });
-
         const user = {
             name: req.body.usuario
         }
@@ -44,14 +41,28 @@ function generarToken(user) {
     return jwt.sign(user, process.env.JWT_KEY, { expiresIn: '15s'})
 }
 
-app.get('/datos', (req, res) => {
+function autenticarAcceso(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+        if (err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+}
+
+
+app.get('/datos', autenticarAcceso, (req, res) => {
+   
 	const datos = [
-		{ id: 1, nombre: "Asfo" },
+		{ id: 1, nombre: "asd" },
 		{ id: 2, nombre: "Denisse" },
 		{ id: 3, nombre: "Carlos" }
 	];
-	
-	res.json(datos);
+
+	res.json(datos.filter(dato => {dato.nombre === req.body.usuario}));
 });
 
 app.listen(3000, () => {
