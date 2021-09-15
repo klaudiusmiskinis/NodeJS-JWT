@@ -1,0 +1,21 @@
+GET http://localhost:3000/
+
+
+###
+
+
+GET http://localhost:3000/datos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzA1OTk0LCJleHAiOjE2MzE3MDYwMDl9.y1hhbfkhbBvxNEEKk7D1CKZzGfNw6tA_LEGtnWHf9kM
+
+
+
+###
+
+
+POST http://localhost:3000/autenticar
+content-type: application/json
+
+{
+    "usuario": "asd",
+    "contrasena": "123"
+}
