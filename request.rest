@@ -1,32 +1,37 @@
+//GET A / - SIMPLE PAGINA PARA PROBAR EL ACCESO
 GET http://localhost:3000/
 
-
 ###
 
-
+//GET A /DATOS - SE COMPRUEBA EL TOKEN DEL CLIENTE, POR MEDIO DEL MIDDLEWARE SE LE AUTORIZA O NO A LOS DATOS
 GET http://localhost:3000/datos
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzI5ODQwLCJleHAiOjE2MzE3Mjk4NTV9.pp1Pej2traj8eKaNepLYMTr_juoswyCYoN85zeRGcQg
-
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzc5ODM4LCJleHAiOjE2MzE3Nzk4OTh9.wCbGiSnd6j59pL1WCtNyNuKiXi5_QlHFv3B0F7hX_G0
 
 ###
 
-
+//POST A /TOKEN - SE COMPRUEBA EL TOKEN REFRESH PARA GENERAR EL TOKEN UNICO AL CLIENTE QUE LO SOLICITA
 POST http://localhost:3000/token
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzIzMDAyfQ.A14gEnc9dMVNLtXBV5EGJLGV9lLsfjs5NPh4xBx6ZMY"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzgwMzUyfQ.a-AKnCJKYl6Ud2-nGKlmLjYa4wjW0zc8C26NX3e31ds"
 }
 
-
 ###
-
-
+//POST A AUTENTICAR - SE AUTENTIFICA EL USUARIO CON LOS DATOS CORRECTOS
 POST http://localhost:3000/autenticar
-content-type: application/json
+Content-Type: application/json
 
 {
     "usuario": "asd",
     "contrasena": "123"
+}
+
+###
+//DELETE A LOGOUT - SE BORRA EL TOKEN DE REFRESH GENERADO POR EL USUARIO CON ACCESO.
+DELETE http://localhost:3000/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXNkIiwiaWF0IjoxNjMxNzgwMTcyfQ.ThMsiuOBpmtAX-dE5p03Fzjw_w-Tb-gLFbH-YUvA8l4"
 }

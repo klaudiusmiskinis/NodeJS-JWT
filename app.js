@@ -8,15 +8,28 @@ app.use(bodyParser.urlencoded({extended: true})); //Convertir los datos que se r
 
 app.use(bodyParser.json());
 
-
 app.use(express.static('views'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/autenticar.html')
 });
 
+
+app.delete('/logout', (req, res) => {
+    refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.sendStatus(204)
+})
+
 app.post('/token', (req, res) => {
     console.log(req.body.token)
+    const refreshToken = req.body.token
+    if(refreshToken == null) return res.sendStatus(401)
+    if(!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+    jwt.verify(refreshToken, process.env.JWT_REFRESH, (err, user) => {
+      if (err) return res.sendStatus(403)
+      const accessToken = generarToken({ name: user.name })
+      res.json({ accessToken: accessToken})  
+    })
 })
 
 app.post('/autenticar', (req, res) => {
@@ -27,7 +40,7 @@ app.post('/autenticar', (req, res) => {
 
         const accessToken = generarToken(user)
         const refreshToken = jwt.sign(user, process.env.JWT_REFRESH)
-
+        refreshTokens.push(refreshToken)
         res.json({
             accessToken: accessToken,
             refreshToken: refreshToken
@@ -37,8 +50,23 @@ app.post('/autenticar', (req, res) => {
     }
 })
 
+app.get('/datos', autenticarAcceso, (req, res) => {
+	const datos = [
+		{ id: 1, nombre: "asd" },
+		{ id: 2, nombre: "Denisse" },
+		{ id: 3, nombre: "Carlos" }
+	];
+    res.json(datos)   
+});
+
+app.listen(3000, () => {
+    console.log('Servidor iniciado')
+});
+
+//FUNCIONES
+
 function generarToken(user) {
-    return jwt.sign(user, process.env.JWT_KEY, { expiresIn: '15s'})
+    return jwt.sign(user, process.env.JWT_KEY, { expiresIn: '60s'})
 }
 
 function autenticarAcceso(req, res, next) {
@@ -52,19 +80,3 @@ function autenticarAcceso(req, res, next) {
         next()
     })
 }
-
-
-app.get('/datos', autenticarAcceso, (req, res) => {
-   
-	const datos = [
-		{ id: 1, nombre: "asd" },
-		{ id: 2, nombre: "Denisse" },
-		{ id: 3, nombre: "Carlos" }
-	];
-
-	res.json(datos.filter(dato => {dato.nombre === req.body.usuario}));
-});
-
-app.listen(3000, () => {
-    console.log('Servidor iniciado')
-});
